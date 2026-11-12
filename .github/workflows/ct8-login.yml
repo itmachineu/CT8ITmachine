@@ -1,0 +1,23 @@
+name: CT8 login
+
+on:
+  schedule:
+    - cron: "0 8 1 * *"   # 1. dnia każdego miesiąca, 8:00 UTC
+  workflow_dispatch:        # pozwala uruchomić ręcznie z zakładki Actions
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests beautifulsoup4
+
+      - run: python ct8_login.py
+        env:
+          CT8_USER: ${{ secrets.CT8_USER }}
+          CT8_PASS: ${{ secrets.CT8_PASS }}
